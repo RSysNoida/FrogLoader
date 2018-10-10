@@ -1,55 +1,64 @@
 import React from "react";
-import { View, Modal, StyleSheet,Platform ,Animated,Image,Easing} from "react-native";
+import { View, Modal, StyleSheet, Platform, Animated, Image, Easing } from "react-native";
 
+class Loader extends React.PureComponent {
+    componentWillReceiveProps(props) {
 
-const Loader = (props) => {
-    this.RotateValueHolder = new Animated.Value(0);
-    const RotateData = this.RotateValueHolder.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0deg', '360deg']
-      })
+    }
 
-      this.StartImageRotateFunction();
-    
-
-return props.show ? <View style={styles.MainContainer}>
-        <Modal
-            transparent={true}
-            animationType={"fade"}
-            onRequestClose={
-                () => {
- 
-                }
-            }>
-           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
-                <View style={styles.Loader_Main_view}>
-                <Animated.Image
-               style={{
-              width: 60,
-              height: 60,
-              transform: [{rotate: RotateData}] }}
-              source={require('./images/loader.png')} />
-                </View>
-            </View>
-        </Modal>
-    </View> : null ;
-}
-
-
-StartImageRotateFunction =() =>{
-
-    this.RotateValueHolder.setValue(0)
-    
-    Animated.timing(
-      this.RotateValueHolder,
-      {
-        toValue: 1,
-        duration: 1000,
-        easing: Easing.linear
-      }
-    ).start(() => this.StartImageRotateFunction())
+    constructor() {
+        super()
+        this.RotateValueHolder = new Animated.Value(0);
+    }
   
-  }
+    componentDidMount() {
+        this.StartImageRotateFunction();
+    }
+
+    StartImageRotateFunction() {
+        this.RotateValueHolder.setValue(0)
+        Animated.timing(
+            this.RotateValueHolder,
+            {
+                toValue: 1,
+                duration: 1000,
+                easing: Easing.linear
+            }
+        ).start(() => this.StartImageRotateFunction())
+    }
+
+    render() {
+        const RotateData = this.RotateValueHolder.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '360deg']
+        })
+
+        return (
+            this.props.show ? <View style={styles.MainContainer}>
+                <Modal
+                    transparent={true}
+                    animationType={"fade"}
+                    onRequestClose={
+                        () => {
+
+                        }
+                    }>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
+                        <View style={styles.Loader_Main_view}>
+                            <Animated.Image
+                                style={{
+                                    width: 60,
+                                    height: 60,
+                                    transform: [{ rotate: RotateData }]
+                                }}
+                                source={require('./images/loader.png')} />
+                        </View>
+                    </View>
+                </Modal>
+            </View> : null
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     MainContainer: {
@@ -58,8 +67,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: (Platform.OS == 'ios') ? 20 : 0,
         position: 'absolute',
-        top:0,
-        bottom:0,
+        top: 0,
+        bottom: 0,
         left: 0,
         right: 0,
         zIndex: 999
