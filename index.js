@@ -22,7 +22,8 @@ class Loader extends React.PureComponent {
             {
                 toValue: 1,
                 duration: 1000,
-                easing: Easing.linear
+                easing: Easing.linear,
+                useNativeDriver:true,
             }
         ).start(() => this.StartImageRotateFunction())
     }
